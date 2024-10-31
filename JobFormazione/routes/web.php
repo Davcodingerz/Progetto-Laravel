@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProvaController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProvaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,3 +65,26 @@ Route::get('/esempio', function(){
     $nullVariable= null;
     return view('esempio', compact('items', 'title', 'sumValue', 'emptyArray', ));
 });
+
+Route::get('/posts', function(){
+    $posts = Post::all();
+    return view('posts.index', compact('posts'));
+});
+
+Route::get('/posts/create', function(){
+    $post = Post::create([
+        'title'=>'nuovo post',
+        'content'=>'contenuto nuovo post',
+        'user_id'=>1
+    ]);
+    return $post;
+});
+
+
+#rotta dinamica
+Route::get('/posts/delete/{id}', function($id){
+    $post = Post::find($id);
+    $post -> delete();
+    return 'Post con id '. $id . ' eliminato';
+});
+
